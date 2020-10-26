@@ -1,5 +1,5 @@
-#include "lib/seqlist.h"
-#include "lib/sincirlist.h"
+#include "../lib/seqlist.h"
+#include "../lib/sincirlist.h"
 void josephus1(seqlist<int> &seq, int s, int m);
 void josephus2(sincirlist<int> &mlist, int s, int m);
 int main()

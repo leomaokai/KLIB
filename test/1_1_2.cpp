@@ -1,4 +1,4 @@
-#include "lib/seqlist.h"
+#include "../lib/seqlist.h"
 void delsame(seqlist<int> &seq); //删除相同元素
 void part(seqlist<int> &seq);    //将元素以0为基准分成两个顺序表
 int main()

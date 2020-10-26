@@ -1,8 +1,8 @@
-#ifndef SINLIST_H
-#define SINLIST_H
-//单向链表,循环
+//单向链表
 //第0个位置为头结点
-#include "head.h"
+#include <iostream>
+using namespace std;
+
 template <typename T>
 struct listnode
 {
@@ -10,25 +10,22 @@ struct listnode
     listnode *next;
 };
 template <typename T>
-class sinlist
+class linklist
 {
 public:
-    sinlist()
+    linklist() : _head(new listnode<T>()),
+                 _ptr(_head),
+                 _size(0)
     {
-        _head = new listnode<T>();
-        _head->next = nullptr;
-        _ptr = _head;
-        _size = 0;
     }
-    ~sinlist()
+    ~linklist()
     {
         listnode<T> *p = _head->next;
         for (int i = 0; i < _size; ++i)
         {
-            listnode<T> *temp = p->next;
             if (p != nullptr)
                 delete p;
-            p = temp;
+            p = p->next;
         }
     }
     void push_back(const T &val) //尾插
@@ -74,36 +71,23 @@ public:
         delete temp;
         --_size;
     }
-    int findval(int &pos, const T &val) //返回某元素的位置
+    void locate(const T &val) //返回某元素的位置
     {
         listnode<T> *p = _head->next;
-        int t = pos;
-        while (--pos)
-            p = p->next;
-        for (int i = t; i <= _size; ++i)
+        bool flag = true;
+        for (int i = 1; i <= _size; ++i)
         {
             if (p->data == val)
             {
-                return i;
+                cout << i << endl;
+                flag = false;
             }
             p = p->next;
         }
-        return -1;
+        if (flag) //没有找到
+            cout << "no val" << endl;
     }
-    T getval(const int &pos) //返回第pos结点的元素
-    {
-        if (pos <= 0 || pos > _size)
-            throw "pos id error";
-        listnode<T> *p = _head->next;
-        int i = 1;
-        while (i != pos)
-        {
-            p = p->next;
-            ++i;
-        }
-        return p->data;
-    }
-    int number(const T &val) //返回元素val的个数
+    void number(const T &val) //返回元素val的个数
     {
         listnode<T> *p = _head->next;
         int count = 0;
@@ -113,7 +97,7 @@ public:
                 count++;
             p = p->next;
         }
-        return count;
+        cout << count << endl;
     }
     void exchange(const int &pos) //交换pos位置和next的位置
     {
@@ -144,12 +128,28 @@ public:
         }
     }
     bool empty() { return _head->next == nullptr; }
-    int size() { return _size; }
 
 private:
     listnode<T> *_head; //头结点
     listnode<T> *_ptr;  //指向最后一个结点
     int _size;          //链表大小
 };
-
-#endif
+int main()
+{
+    linklist<int> list;
+    list.push_back(1);
+    list.push_back(2);
+    list.push_back(3);
+    list.push_back(2);
+    list.print(); //1 2 3 2
+    list.insert(1, 5);
+    list.print(); //5 1 2 3 2
+    list.del(1);
+    list.print();   //1 2 3 2
+    list.locate(1); //1
+    list.number(2); //2
+    list.exchange(2);
+    list.print(); //1 3 2 2
+    list.locate(4);
+    return 0;
+}

@@ -1,36 +1,26 @@
-#ifndef SEQLIST_H
-#define SEQLIST_H
 //顺序表
 //元素位置从0开始
-#include "head.h"
+#include <iostream>
+using namespace std;
+//顺序表模板
 template <typename T>
-class seqlist
+class sqlist
 {
 public:
-    seqlist(int size = 10) //构造函数
+    sqlist(int size = 2) : _first(new T[size]()),
+                           _last(_first),
+                           _end(_first + size)
     {
-        _first = new T[size]();
-        _last = _first;
-        _end = _first + size;
     }
-    ~seqlist() //析构函数
+    ~sqlist() //析构函数
     {
         delete[] _first;
     }
-    void push_back(const T &val) //向表尾插入元素
+    void push_back(const T &val)
     {
         if (full())
             expand();
         *_last++ = val;
-    }
-    T getval(const int &pos) //返回pos位置的元素
-    {
-        if (pos < 0 || pos > num() - 1) //判断插入是否合理
-        {
-            cout << "pos is error" << endl;
-            throw "the pos error";
-        }
-        return _first[pos];
     }
     void insert(const int &pos, const T &val) //在pos位置插入元素val
     {
@@ -58,20 +48,27 @@ public:
         _first[num() - 1] = 0;
         --_last;
     }
-    int number(const T &val) //返回元素val的个数
+    void locate(const T &val) //返回元素val的位置
+    {
+        bool flag = true;
+        for (int i = 0; i < size(); ++i)
+        {
+            if (_first[i] == val)
+            {
+                cout << i << endl;
+                flag = false;
+            }
+        }
+        if (flag)
+            cout << "no val" << endl;
+    }
+    void number(const T &val) //返回元素val的个数
     {
         int count = 0;
         for (int i = 0; i < num(); ++i)
             if (_first[i] == val)
                 ++count;
-        return count;
-    }
-    int findval(const int &pos, const T &val) //查找是否有相同的元素,返回表中首次出现的位置
-    {
-        for (int i = pos; i < size(); ++i)
-            if (val == _first[i])
-                return i;
-        return -1;
+        cout << count << endl;
     }
     void print()
     {
@@ -104,5 +101,21 @@ private:
         _end = _first + 2 * _size;
     }
 };
-
-#endif
+int main()
+{
+    sqlist<int> sq; //默认开辟2个空间
+    sq.push_back(5);
+    sq.push_back(5);
+    sq.push_back(6);
+    sq.push_back(7);
+    sq.print(); //5 5 6 7
+    sq.del(0);
+    sq.print();   //5 6 7
+    sq.locate(5); //0
+    sq.insert(0, 5);
+    sq.print(); //5 5 6 7
+    sq.insert(1, 4);
+    sq.print();   //5 4 5 6 7
+    sq.number(5); //2
+    return 0;
+}

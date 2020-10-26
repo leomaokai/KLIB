@@ -1,4 +1,4 @@
-#include "lib/sinlist.h"
+#include "../lib/sinlist.h"
 void delsame(sinlist<int> &sin);
 int main()
 {

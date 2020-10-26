@@ -1,4 +1,4 @@
-#include "lib/head.h"
+#include "../lib/head.h"
 clock_t start, finish;
 void test1(const int &n)
 {

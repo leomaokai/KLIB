@@ -1,4 +1,4 @@
-#include "lib/head.h"
+#include "../lib/head.h"
 
 struct listnode
 {
