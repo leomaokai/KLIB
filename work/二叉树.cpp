@@ -106,35 +106,32 @@ Btree pos_in_creatrtree(char *pos, char *mid, int len)
     T->rchild = pos_in_creatrtree(pos + index, mid + index + 1, len - index - 1);
     return T;
 }
-//寻早某节点
+//寻早某结点
 bool findnode(const Btree &T, const char &val)
 {
     if (T != nullptr)
     {
         if (T->data == val) //找到返回true
             return true;
-        else
+        else if (findnode(T->lchild, val) || findnode(T->rchild, val))
         {
-            if (findnode(T->lchild, val) || findnode(T->rchild, val))
-                return true;
+            return true;
         }
     }
     return false;
 }
-//打印节点所有祖先
+//打印结点所有祖先
 bool findfather(const Btree &T, const char &val)
 {
     if (T != nullptr)
     {
         if (T->data == val) //找到返回true
             return true;
-        else //没有找到就寻早其子树,并打印经过的父结点的值
+        //没有找到就寻早其子树,并打印经过的父结点的值
+        else if (findfather(T->lchild, val) || findfather(T->rchild, val))
         {
-            if (findfather(T->lchild, val) || findfather(T->rchild, val))
-            {
-                cout << T->data << " ";
-                return true;
-            }
+            cout << T->data << " ";
+            return true;
         }
     }
     return false;
