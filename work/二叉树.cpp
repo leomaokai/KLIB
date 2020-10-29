@@ -71,7 +71,7 @@ void levelorder(Btree T) //层次遍历
     }
 }
 //前序中序还原树
-Btree pre_in_creatrtree(char *pre, char *mid, int len)
+Btree pre_in_creatrtree(const char *pre, const char *mid, int len)
 {
     if (len == 0)
         return nullptr;
@@ -89,7 +89,7 @@ Btree pre_in_creatrtree(char *pre, char *mid, int len)
     return T;
 }
 //后序中序还原树
-Btree pos_in_creatrtree(char *pos, char *mid, int len)
+Btree pos_in_creatrtree(const char *pos, const char *mid, int len)
 {
     if (len == 0)
         return nullptr;

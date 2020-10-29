@@ -1,17 +1,33 @@
-#include "lib/seqlist.h"
-#include "lib/sinlist.h"
+#include "lib/test.h"
+class test1
+{
+public:
+    test1()
+    {
+        cout << "test1()" << endl;
+    }
+    ~test1()
+    {
+        cout << "~test1()" << endl;
+    }
+};
+class test2 : public test1
+{
+public:
+    test2()
+    {
+        cout << "test2()" << endl;
+    }
+    ~test2()
+    {
+        cout << "~test2()" << endl;
+    }
+
+private:
+    test a;
+};
 int main()
 {
-    sinlist<int> test;
-    for(int i=0;i<10;++i)
-    {
-        test.push_back(rand()%100+1);
-    }
-    test.print();
-    int temp=test.getval(9);
-    cout<<temp<<endl;
-    cout<<test.findval(70)<<endl;
-    test.insert(4,80);
-    test.print();
+    test2 b;
     return 0;
 }
