@@ -15,29 +15,53 @@ public:
     ~solution()
     {
         listnode *p = _head->next;
-        for (int i = 0; i < _size; ++i)
+        listnode *temp = nullptr;
+        while (p != nullptr)
         {
-            listnode *temp = p->next;
-            if (p != nullptr)
-                delete p;
+            temp = p->next;
+            delete p;
             p = temp;
         }
     }
-    //拷贝构造
-    solution &operator=(const solution &a)
+    solution(const solution &a) : _head(new listnode()), _ptr(_head)
     {
-        listnode *temp = a._head->next;
-        while (temp != nullptr)
+        _size = a._size;
+        listnode *temp1 = a._head->next;
+        while (temp1 != nullptr)
         {
             listnode *p = new listnode();
-            p->coef = temp->coef;
-            p->exp = temp->exp;
+            p->coef = temp1->coef;
+            p->exp = temp1->exp;
             p->next = nullptr;
-            temp = temp->next;
+            temp1 = temp1->next;
             _ptr->next = p;
             _ptr = p;
         }
-        _size = a._size;
+    }
+    //赋值构造
+    solution &operator=(const solution &a)
+    {
+        listnode *p = this->_head->next;
+        listnode *temp = nullptr;
+        while (p != nullptr)
+        {
+            temp = p->next;
+            delete p;
+            p = temp;
+        }
+        this->_ptr = this->_head;
+        this->_size = a._size;
+        listnode *temp1 = a._head->next;
+        while (temp1 != nullptr)
+        {
+            listnode *p = new listnode();
+            p->coef = temp1->coef;
+            p->exp = temp1->exp;
+            p->next = nullptr;
+            temp1 = temp1->next;
+            this->_ptr->next = p;
+            this->_ptr = p;
+        }
         return *this;
     }
     void push_back(const int &a, const int &b)
@@ -55,7 +79,7 @@ public:
         if (!empty())
         {
             listnode *p = _head->next;
-            for (int i = 1; i <= _size; ++i)
+            while (p != nullptr)
             {
                 cout << p->coef << "X" << p->exp << " ";
                 p = p->next;
@@ -69,30 +93,30 @@ private:
     listnode *_head;
     int _size;
     listnode *_ptr;
-    friend solution operator+(const solution &a,const solution &b);
+    friend solution operator+(const solution &a, const solution &b);
 };
 //加法运算符重载
-solution operator+(const solution &a,const solution &b)
+
+solution operator+(const solution &a, const solution &b)
 {
     solution temp;
-    int size=min(a._size,b._size);
-    listnode *temp1=a._head->next;
-    listnode *temp2=b._head->next;
-    for(int i=1;i<=size;++i)
+    listnode *temp1 = a._head->next;
+    listnode *temp2 = b._head->next;
+    while (temp1 != nullptr && temp2 != nullptr)
     {
-        temp.push_back(temp1->coef+temp2->coef,temp1->exp+temp2->exp);
-        temp1=temp1->next;
-        temp2=temp2->next;
+        temp.push_back(temp1->coef + temp2->coef, temp1->exp);
+        temp1 = temp1->next;
+        temp2 = temp2->next;
     }
-    while(temp1!=nullptr)
+    while (temp1 != nullptr)
     {
-        temp.push_back(temp1->coef,temp1->exp);
-        temp1=temp1->next;
+        temp.push_back(temp1->coef, temp1->exp);
+        temp1 = temp1->next;
     }
-    while(temp2!=nullptr)
+    while (temp2 != nullptr)
     {
-        temp.push_back(temp2->coef,temp2->exp);
-        temp2=temp2->next;
+        temp.push_back(temp2->coef, temp2->exp);
+        temp2 = temp2->next;
     }
     return temp;
 }
@@ -103,10 +127,14 @@ int main()
     a1.push_back(5, 0);
     a1.push_back(6, 1);
     a1.print();
-    a2 = a1;
-    a2.push_back(-10,2);
+    a2.push_back(10, 0);
     a2.print();
-    solution a3(a1+a2);
+    a2 = a1;
+    a2.print();
+    solution a3(a1 + a2);
     a3.print();
+    solution a4;
+    a4 = a3 + a1;
+    a4.print();
     return 0;
 }

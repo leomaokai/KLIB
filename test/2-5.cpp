@@ -6,7 +6,7 @@
 	设路口每个方向进入的车辆随机9~15辆/分钟；
 	设每辆车通过路口的时间随机4~5秒/辆
 */
-// vasual studio 2019编译
+//visual studio 2019 
 #include <thread>
 #include <time.h>
 #include <queue>
@@ -20,9 +20,9 @@ public:
     lamp() : light1(true), light2(false) //初始东西绿灯
     {
     }
-    void transform(int m)
+    void transform()
     {
-        while (m--)
+        while (true)
         {
             std::this_thread::sleep_for(std::chrono::seconds(60));//60秒替换
             light1 = !light1;
@@ -53,6 +53,7 @@ public:
     //4~6秒每个方向进一辆车
     void pushcareast()
     {
+        srand(time(0));
         while (true)
         {
             std::this_thread::sleep_for(std::chrono::seconds(rand() % 3 + 4));
@@ -61,6 +62,7 @@ public:
     }
     void pushcarwest()
     {
+        srand(time(0));
         while (true)
         {
             std::this_thread::sleep_for(std::chrono::seconds(rand() % 3 + 4));
@@ -69,6 +71,7 @@ public:
     }
     void pushcarsouth()
     {
+        srand(time(0));
         while (true)
         {
             std::this_thread::sleep_for(std::chrono::seconds(rand() % 3 + 4));
@@ -77,79 +80,88 @@ public:
     }
     void pushcarnorth()
     {
+        srand(time(0));
         while (true)
         {
             std::this_thread::sleep_for(std::chrono::seconds(rand() % 3 + 4));
             north.push(1);
         }
     }
-    void passeast(int n)
+    void passeast()
     {
-        while (n--)
+        srand(time(0));
+        while (true)
         {
-            while (traffic.getlight1())
+            if (traffic.getlight1())//检测是否为绿灯
             {
-                while (!east.empty())
+                while (!east.empty())//如果路口堵有车辆
                 {
-                    east.pop();
-                    ++count1;
-                    cout << "east to west pass " << count1 << " cars" << endl;
+                    east.pop();//车辆通过路口
+                    ++count1;//计数+1
+                    //cout << "east to west pass " << count1 << " cars" << endl;
                 }
-                std::this_thread::sleep_for(std::chrono::seconds(rand() % 2 + 4));
+                std::this_thread::sleep_for(std::chrono::seconds(rand() % 2 + 4));//车辆通过路口时间4~5秒
             }
-            std::this_thread::sleep_for(std::chrono::seconds(1));
+            //std::this_thread::sleep_for(std::chrono::seconds(1));//一秒后再次检测红绿灯
         }
     }
-    void passwest(int n)
+    void passwest()
     {
-        while (n--)
+        srand(time(0));
+        while (true)
         {
-            while (traffic.getlight1())
+            if (traffic.getlight1())
             {
                 while (!west.empty())
                 {
                     west.pop();
                     ++count2;
-                    cout << "west to east pass " << count2 << " cars" << endl;
+                    //cout << "west to east pass " << count2 << " cars" << endl;
                 }
                 std::this_thread::sleep_for(std::chrono::seconds(rand() % 2 + 4));
             }
-            std::this_thread::sleep_for(std::chrono::seconds(1));
+            //std::this_thread::sleep_for(std::chrono::seconds(1));
         }
     }
-    void passsouth(int n)
+    void passsouth()
     {
-        while (n--)
+        srand(time(0));
+        while (true)
         {
-            while (traffic.getlight2())
+            if (traffic.getlight2())
             {
                 while (!south.empty())
                 {
                     south.pop();
                     ++count3;
-                    cout << "south to north pass " << count3 << " cars" << endl;
+                    //cout << "south to north pass " << count3 << " cars" << endl;
                 }
                 std::this_thread::sleep_for(std::chrono::seconds(rand() % 2 + 4));
             }
-            std::this_thread::sleep_for(std::chrono::seconds(1));
+            //std::this_thread::sleep_for(std::chrono::seconds(1));
         }
     }
-    void passnorh(int n)
+    void passnorh()
     {
-        while (n--)
+        srand(time(0));
+        while (true)
         {
-            while (traffic.getlight2())
+            if (traffic.getlight2())
             {
                 while (!north.empty())
                 {
                     north.pop();
                     ++count4;
-                    cout << "north to south pass " << count4 << " cars" << endl;
+                    //cout << "north to south pass " << count4 << " cars" << endl;
                 }
                 std::this_thread::sleep_for(std::chrono::seconds(rand() % 2 + 4));
             }
-            std::this_thread::sleep_for(std::chrono::seconds(1));
+            //std::this_thread::sleep_for(std::chrono::seconds(1));
         }
+    }
+    int total()
+    {
+        return count1 + count2 + count3 + count4;
     }
     ~crossroad() {}
 
@@ -160,28 +172,38 @@ private:
     queue<int> north; //北路口
     int count1,count2,count3,count4;
 };
+
 int main()
 {
-    crossroad p;
-    int n = 240;
-    thread threadlamp(&lamp::transform,&traffic,4);
-    thread threadcar1(&crossroad::pushcareast, &p);
-    thread threadcar2(&crossroad::pushcarwest, &p);
-    thread threadcar3(&crossroad::pushcarsouth, &p);
-    thread threadcar4(&crossroad::pushcarnorth, &p);
-    thread threadeast(&crossroad::passeast, &p,n);
-    thread threadwest(&crossroad::passwest, &p,n);
-    thread threadsouth(&crossroad::passsouth, &p,n);
-    thread threadnorth(&crossroad::passnorh, &p,n);
-    threadlamp.join();
-    threadcar1.join();
-    threadcar2.join();
-    threadcar3.join();
-    threadcar4.join();
-    threadeast.join();
-    threadwest.join();
-    threadsouth.join();
-    threadnorth.join();
+    int time = 0;
+    cout << "input time" << endl;
+    cin >> time;
+    thread threadlamp(&lamp::transform, &traffic);//交通灯60秒替换
+    threadlamp.detach();//线程分离
+    crossroad p1;
+    thread threadpushcareast1(&crossroad::pushcareast, &p1);//东路口随机进车
+    thread threadpushcarwest1(&crossroad::pushcarwest, &p1);//西路口随机进车
+    thread threadpushcarsouth1(&crossroad::pushcarsouth, &p1);//南路口随机进车
+    thread threadpushcarnorth1(&crossroad::pushcarnorth, &p1);//西路口随机进车
+    thread threadeast1(&crossroad::passeast, &p1);//东西通过
+    thread threadwest1(&crossroad::passwest, &p1);//西东通过
+    thread threadsouth1(&crossroad::passsouth, &p1);//南北通过
+    thread threadnorth1(&crossroad::passnorh, &p1);//北南通过
+    threadpushcareast1.detach();
+    threadpushcarwest1.detach();
+    threadpushcarsouth1.detach();
+    threadpushcarnorth1.detach();
+    threadeast1.detach();
+    threadwest1.detach();
+    threadsouth1.detach();
+    threadnorth1.detach();
+    for (int i = time; i > 0; --i)
+    {
+        cout << i << " ";
+        std::this_thread::sleep_for(std::chrono::seconds(1));
+    }
+    cout << endl;
+    cout << "test : all cars " << p1.total() << endl;
 
     return 0;
 }
