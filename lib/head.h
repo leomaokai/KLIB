@@ -10,6 +10,8 @@
 #include <vector>
 #include <list>
 #include <thread>
+#include <stack>
+#include <queue>
 using namespace std;
 
 #endif

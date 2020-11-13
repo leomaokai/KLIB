@@ -11,14 +11,14 @@ using namespace std;
 class graphtest
 {
 public:
-    graphtest(int n) : _n(n), graphhead(new head[_n]{}) //构造函数
+    graphtest(int n) : _n(n), graphhead(new head[_n]()) //构造函数
     {
     }
     ~graphtest() //析构函数
     {
         for (int i = 0; i < _n; ++i)
         {
-            listnode *temp = graphhead[i].first;
+            listnode* temp = graphhead[i].first;
             while (temp != nullptr) //链表删除方式进行delete
             {
                 temp = graphhead[i].first->next;
@@ -28,9 +28,9 @@ public:
         }
         delete[] graphhead; //delete数组
     }
-    void insertuv(const int &u, const int &v) //边的插入
+    void insertuv(const int& u, const int& v) //边的插入
     {
-        listnode *temp = new listnode(); //链表头结点插入方式
+        listnode* temp = new listnode(); //链表头结点插入方式
         temp->next = graphhead[u].first;
         temp->to = v;
         graphhead[u].first = temp;
@@ -39,7 +39,7 @@ public:
     {
         for (int i = 0; i < _n; ++i)
         {
-            listnode *temp = graphhead[i].first;
+            listnode* temp = graphhead[i].first;
             cout << i << "--first-->";
             while (temp != nullptr)
             {
@@ -54,15 +54,15 @@ private:
     struct listnode //邻接点结构体
     {
         int to;
-        listnode *next;
+        listnode* next;
     };
     struct head //顶点数组结构体
     {
         //int data;
-        listnode *first;
+        listnode* first;
     };
     int _n;          //顶点数
-    head *graphhead; //顶点数组
+    head* graphhead; //顶点数组
 };
 int main()
 {
@@ -86,10 +86,10 @@ int main()
 }
 void graphtest::solution()
 {
-    int arry[_n]{};              //存放入度的数组
+    int* arry = new int[_n]();              //存放入度的数组
     for (int i = 0; i < _n; ++i) //遍历邻接表
     {
-        listnode *temp = graphhead[i].first;
+        listnode* temp = (listnode*)graphhead[i].first;
         while (temp != nullptr)
         {
             int t = temp->to;
@@ -100,4 +100,5 @@ void graphtest::solution()
     for (int i = 0; i < _n; ++i) //打印结果
         cout << arry[i] << " ";
     cout << endl;
+    delete[]arry;
 }
