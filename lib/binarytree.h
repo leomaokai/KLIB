@@ -277,7 +277,7 @@ void binarytree<T>::createhuffmantree()
     }
 }
 template <typename T>
-int binarytree<T>::depth() //先序遍历到叶子从叶子寻早父亲,记录深度
+int binarytree<T>::depth() //先序遍历到叶子从叶子寻找父亲,记录深度
 {
     int count = 1;//临时记录每个叶子的深度
     int d = 0;//记录最高深度
