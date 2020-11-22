@@ -24,8 +24,7 @@ public:
         for (int i = 0; i < _n; ++i)
             if (edge[i] != nullptr)
             {
-                delete edge[i];
-                edge[i] = nullptr;
+                delete []edge[i];
             }
         vex = nullptr;
         if (edge != nullptr)

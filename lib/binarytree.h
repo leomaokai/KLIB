@@ -223,7 +223,7 @@ void binarytree<T>::createhuffmantree()
     {
         cout << "input val and weigth:" << endl;
         cin >> huffnode[i]->data >> huffnode[i]->weight;
-        huffnode[i]->flag=true;
+        huffnode[i]->flag = true;
     }
     int m1 = 0, m2 = 0, x1 = 0, x2 = 0;
     for (int i = 0; i < _l - 1; ++i) //构造哈夫曼树
@@ -279,8 +279,8 @@ void binarytree<T>::createhuffmantree()
 template <typename T>
 int binarytree<T>::depth() //先序遍历到叶子从叶子寻找父亲,记录深度
 {
-    int count = 1;//临时记录每个叶子的深度
-    int d = 0;//记录最高深度
+    int count = 1; //临时记录每个叶子的深度
+    int d = 0;     //记录最高深度
     if (_root != nullptr)
     {
         stack<treenode *> mstack;

@@ -1,5 +1,6 @@
-//程序名:head.hpp
-//klib框架公用头文件
+/*    leomaokai    */
+/* 程序名:head.hpp */
+/*  klib公用头文件 */
 
 #ifndef KHEAD_H
 #define KHEAD_H
