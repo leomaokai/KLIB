@@ -1,14 +1,21 @@
 #include "head.h"
-
 class test
 {
 public:
-    test()
+    test():_n(5)
     {
-        cout << "test()" << endl;
     }
     ~test()
     {
-        cout << "~test()" << endl;
     }
+    void testdigui()
+    {
+        while (_n!=0)
+        {
+            --_n;
+            cout << "hello" << endl;
+            testdigui();
+        }
+    }
+    int _n;
 };

@@ -1,14 +1,14 @@
-#include "lib/graph.h"
+#include "lib/mysort.h"
 int main()
 {
-    mygraph test(8, 12, false);
-    test.creategraph();
-    test.print();
-    cout << "dfs the graph" << endl;
-    dfsam(test, 0);
-    cout << endl;
-    test.clear();
-    cout << "bfs the graph" << endl;
-    bfsam(test, 0);
+    cout<<"input num:"<<endl;
+    int n=0;
+    cin>>n;
+    mysort test(n);
+    cout<<"quicksort:"<<endl;
+    //test.insertsort();
+    quicksort(test,0,n-1);
+    //test.shellsort();
+    //test.selectsort();
     return 0;
 }
