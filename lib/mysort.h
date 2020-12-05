@@ -170,7 +170,7 @@ void mysort::radixsort() //应用到桶排序**画图理解**难
                 arry[j++] = temparry[i][k];
             temparry[i][0] = 0;
         }
-        //print();
+        print();
     }
 
     for (i = 0; i < 10; ++i)

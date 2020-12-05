@@ -5,7 +5,7 @@
 #define GRAPH_H
 
 #include "head.h"
-using T = char;
+using T = int;
 const int inf = 1000; //表示无穷
 class mygraph;
 class listgraph;
@@ -14,7 +14,7 @@ class listgraph;
 class mygraph
 {
 public:
-    mygraph(int n, int e , bool f);
+    mygraph(int n, int e, bool f);
     ~mygraph();
     int findvex(const T &a);
     void getvex(const int &i);
@@ -22,7 +22,7 @@ public:
     void print();       //以邻接表的形式打印图
     void clear();
     void getoutdegree();
-    int getindegree();
+    void getindegree();
 
 private:
     int _n;       //顶点数
@@ -121,7 +121,7 @@ void mygraph::creategraph() //创建邻接矩阵
     int temp = 0;
     T tempvex1;
     T tempvex2;
-    int tempweight = 0;
+    int tempweight;
     int e = _e;
     while (e--)
     {
@@ -174,7 +174,7 @@ void mygraph::getoutdegree()
     cout << endl;
     delete[] count;
 }
-int mygraph::getindegree()
+void mygraph::getindegree()
 {
     int *count = new int[_n]();
     for (int j = 0; j < _n; ++j)
@@ -291,7 +291,7 @@ void prim(mygraph &g, const int &v)
     cout << "closest: " << endl;
     for (int i = 0; i < g._n; ++i)
     {
-        cout << closest[i] << " ";
+        cout << g.vex[closest[i]] << " ";
     }
     cout << endl;
     int sumcost = 0;
@@ -409,21 +409,21 @@ listgraph::~listgraph()
             tempnode3 = tempnode2;
         }
     }
-    delete[] vexarry;
-    delete[] revexarry;
 }
 void listgraph::createlistgraph()
 {
     cout << "input vex:" << endl;
     for (int i = 0; i < vexnum; ++i)
     {
+        vexarry[i].first = nullptr;
+        revexarry[i].first = nullptr;
         cin >> vexarry[i].v;
         revexarry[i].v = vexarry[i].v;
     }
     cout << "input vex to vex and w(1)" << endl;
     char tempvex1;
     char tempvex2;
-    int tempw = 1;
+    int tempw;
     int e = edgenum;
     while (e--)
     {
@@ -475,7 +475,7 @@ void listgraph::print()
         cout << vexarry[i].v << "--first-->";
         while (tempnode != nullptr)
         {
-            cout << "(" << tempnode->weight << ")" << tempnode->to << "--next-->";
+            cout << "(" << tempnode->weight << ")" <<vexarry[tempnode->to].v << "--next-->";
             tempnode = tempnode->next;
         }
         cout << "nullptr" << endl;
@@ -540,5 +540,39 @@ void listgraph::getoutdegree()
         cout << count[i] << " ";
     cout << endl;
     delete[] count;
+}
+void listgraph::listdfs()
+{
+    //if (start >= vexnum || start < 0)
+    //    return;
+    stack<int> tempstack;
+    int temp = 0;
+    listnode *tempnode = nullptr;
+    bool *visited = new bool[vexnum]();
+    tempstack.push(temp);
+    while (!tempstack.empty())
+    {
+        int stacktop = tempstack.top();
+        if (!visited[stacktop])
+        {
+            cout << vexarry[stacktop].v << " ";
+            visited[stacktop] = true;
+        }
+        tempnode = vexarry[stacktop].first;
+        while (tempnode != nullptr)
+        {
+            temp = tempnode->to;
+            if (!visited[temp])
+            {
+                tempstack.push(temp);
+                break;
+            }
+            tempnode = tempnode->next;
+        }
+        if (tempnode == nullptr)
+            tempstack.pop();
+    }
+    cout << endl;
+    delete[] visited;
 }
 #endif
